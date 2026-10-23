@@ -49,7 +49,6 @@ limiter = RateLimiter()
 # -------------------------------------------------------------------------
 session = requests.Session()
 
-# Fix 4: Removed unused car_data and corrected session_result layout
 ENDPOINT_LAYOUTS = {
     "meetings": ["year"],
     "sessions": ["year"],
@@ -91,13 +90,13 @@ def fetch_openf1_data(endpoint_name: str, config_params: dict, max_retries: int 
                     logger.error(f"Max retries ({max_retries}) exhausted for 429 Too Many Requests.")
                     response.raise_for_status()
 
-            # Fix 1: raise_for_status() is called BEFORE logging success
+            # raise_for_status() is called BEFORE logging success
             response.raise_for_status()
             logger.info(f"Successfully fetched data from: {response.url}")
             
             return response.json(), response.url
             
-        # Fix 5: Explicitly catch HTTP errors to retry 5xx, but fail fast on 4xx
+        # Explicitly catch HTTP errors to retry 5xx, but fail fast on 4xx
         except requests.exceptions.HTTPError as e:
             if attempt < max_retries and e.response.status_code >= 500:
                 wait_time = base_wait * (2 ** attempt)
