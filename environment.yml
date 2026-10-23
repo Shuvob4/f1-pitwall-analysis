@@ -1,0 +1,9 @@
+name: pitwall
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - pandas
+  - python=3.11
+  - requests
+prefix: /Users/shuvobarman/anaconda3/envs/pitwall
